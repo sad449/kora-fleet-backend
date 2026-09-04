@@ -1,0 +1,43 @@
+"""add audit_logs table
+
+Revision ID: 1c7febc0710a
+Revises: bbf9372bdaed
+Create Date: 2026-08-31 12:25:26.890131
+
+"""
+from typing import Sequence, Union
+
+from alembic import op
+import sqlalchemy as sa
+import sqlmodel
+
+from sqlalchemy.dialects import postgresql
+
+
+                                        
+revision: str = '1c7febc0710a'
+down_revision: Union[str, None] = 'bbf9372bdaed'
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
+
+
+def upgrade() -> None:
+                                                                 
+    op.create_table('audit_logs',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('action', sa.Enum('create', 'update', 'delete', name='auditaction'), nullable=False),
+    sa.Column('entity_type', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('entity_id', sa.Integer(), nullable=False),
+    sa.Column('changes', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+                                  
+
+
+def downgrade() -> None:
+                                                                 
+    op.drop_table('audit_logs')
+                                  

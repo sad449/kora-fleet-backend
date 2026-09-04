@@ -1,0 +1,49 @@
+"""add vehicle_assignments table
+
+Revision ID: e1dd69074a91
+Revises: 4d56aa1286e7
+Create Date: 2026-08-31 12:20:10.382577
+
+"""
+from typing import Sequence, Union
+
+from alembic import op
+import sqlalchemy as sa
+import sqlmodel
+
+
+
+
+                                        
+revision: str = 'e1dd69074a91'
+down_revision: Union[str, None] = '4d56aa1286e7'
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
+
+
+def upgrade() -> None:
+                                                                 
+    op.create_table('vehicle_assignments',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('vehicle_id', sa.Integer(), nullable=False),
+    sa.Column('driver_id', sa.Integer(), nullable=False),
+    sa.Column('assigned_from', sa.DateTime(), nullable=False),
+    sa.Column('assigned_to', sa.DateTime(), nullable=True),
+    sa.Column('notes', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('created_by', sa.Integer(), nullable=True),
+    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.Column('updated_by', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['created_by'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['driver_id'], ['drivers.id'], ),
+    sa.ForeignKeyConstraint(['updated_by'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['vehicle_id'], ['vehicles.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+                                  
+
+
+def downgrade() -> None:
+                                                                 
+    op.drop_table('vehicle_assignments')
+                                  
