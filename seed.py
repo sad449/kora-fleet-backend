@@ -1,4 +1,4 @@
-#  when this runed it creates  the four roles and the first admin
+                                                                 
 from sqlmodel import Session, select
 from app.database import engine
 from app.models.role import Role
@@ -8,7 +8,7 @@ from app.core.security import hash_password
 def seed():
     with Session(engine) as session:
 
-        #1 create roles if they don't exist
+                                           
         role_names = ["admin", "manager", "management", "driver"]
         role_map = {}
 
@@ -28,7 +28,7 @@ def seed():
                 role_map[name] = existing.id
                 print(f"Role already exists: {name}")
 
-        #2 create admin user if they don't exist
+                                                
         admin_email = "admin@korafleet.local"
         existing_admin = session.exec(
             select(User).where(User.email == admin_email)

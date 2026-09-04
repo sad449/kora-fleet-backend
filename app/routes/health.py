@@ -1,4 +1,3 @@
-# this file is about 'the /api/health endpoint.it confirms the API is up and the database responds'.
 
 from fastapi import APIRouter, Depends
 from sqlmodel import Session, text

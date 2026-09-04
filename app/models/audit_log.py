@@ -1,5 +1,4 @@
-# audit_logs — an append-only record of every action on the main tables
-# never edited, never deleted, answers "who did what to which record, when?"
+
 
 from datetime import datetime
 from typing import Optional, Any
@@ -21,10 +20,9 @@ class AuditLog(SQLModel, table=True):
 
     user_id: Optional[int] = Field(default=None, foreign_key="users.id")
     action: AuditAction = Field(nullable=False)
-    entity_type: str = Field(nullable=False)   # which table, e.g. "vehicles"
-    entity_id: int = Field(nullable=False)     # which record's id
+    entity_type: str = Field(nullable=False)   
+    entity_id: int = Field(nullable=False)     
 
-    # before/after values as JSON, jsonb is Postgres-native and fast to query and it is the one used to see before/after values 
     changes: Optional[Any] = Field(default=None, sa_column=Column(JSONB))
 
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)

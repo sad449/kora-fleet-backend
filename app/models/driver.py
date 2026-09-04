@@ -10,15 +10,13 @@ class DriverStatus(str,Enum):
 class Driver(SQLModel,table =True):
     __tablename__='drivers'
     id:Optional[int]=Field(default=None,primary_key=True)
-    # Link to the person (name/email/phone live on users)
 
     user_id:int = Field(foreign_key='users.id',unique=True,nullable=False)
-    # Driver-specific
 
     license_number:str=Field(unique=True,nullable=False)
     license_expiry:Optional [date]=None
     status: DriverStatus = Field(default="active",nullable=False)
-    # audit
+    
 
     creted_at:datetime=Field(default_factory=datetime.utcnow,nullable=False)
     created_by: Optional[int] = Field(default=None, foreign_key="users.id")

@@ -1,7 +1,3 @@
-# auth routes: login and get current user
-# /api/auth/login , public, no token needed
-# /api/auth/me   ,protected, token required
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlmodel import Session
@@ -25,7 +21,6 @@ def me(
     credentials: HTTPAuthorizationCredentials = Depends(bearer),
     session: Session = Depends(get_session)
 ):
-    # this decodes the token from the authorization header
     payload = decode_access_token(credentials.credentials)
     if not payload:
         raise HTTPException(
@@ -33,7 +28,6 @@ def me(
             detail="Invalid or expired token"
         )
 
-    # this loads the user from the database
     user = session.get(User, int(payload["sub"]))
     if not user or not user.is_active:
         raise HTTPException(

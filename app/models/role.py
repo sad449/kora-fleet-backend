@@ -1,5 +1,4 @@
-#the roles table.one row per access level
-#valuses:admin,manager,managment,driver(seeded on first run)
+
 
 from datetime import datetime
 from typing import Optional

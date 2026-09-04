@@ -1,6 +1,3 @@
-# Password hashing and JWT create/verify
-# the rest of the auth code calls into these four functions
-
 from datetime import datetime, timedelta
 from typing import Optional
 import bcrypt
