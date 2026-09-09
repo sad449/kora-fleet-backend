@@ -18,10 +18,11 @@ class Driver(SQLModel,table =True):
     status: DriverStatus = Field(default="active",nullable=False)
     
 
-    creted_at:datetime=Field(default_factory=datetime.utcnow,nullable=False)
+    created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     created_by: Optional[int] = Field(default=None, foreign_key="users.id")
     updated_at: Optional[datetime] = None
     updated_by: Optional[int] = Field(default=None, foreign_key="users.id")
+    is_deleted: bool = Field(default=False, nullable=False)
     deleted_at: Optional[datetime] = None
     deleted_by: Optional[int] = Field(default=None, foreign_key="users.id")
     
