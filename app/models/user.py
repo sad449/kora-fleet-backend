@@ -14,8 +14,8 @@ class User(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
 
-    first_name: str = Field(nullable=False)
-    last_name: str = Field(nullable=False)
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     email: Optional[str] = Field(default=None, unique=True)
     phone: Optional[str] = None
 
@@ -32,7 +32,8 @@ class User(SQLModel, table=True):
 
     role_id: int = Field(foreign_key="roles.id", nullable=False)
     is_active: bool = Field(default=True, nullable=False)
-
+    must_change_password: bool = Field(default=True, nullable=False)
+    profile_completed: bool = Field(default=False, nullable=False)
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     created_by: Optional[int] = Field(default=None, foreign_key="users.id")
     updated_at: Optional[datetime] = None

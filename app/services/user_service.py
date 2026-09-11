@@ -11,25 +11,14 @@ def create_user(data: UserCreate, created_by_id: int, session: Session) -> User:
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    if data.account_type == AccountType.company and not data.company_name:
-        raise HTTPException(status_code=400, detail="Company name is required for company accounts")
-
     user = User(
-        first_name=data.first_name,
-        last_name=data.last_name,
         email=data.email,
-        phone=data.phone,
         password_hash=hash_password(data.password),
         role_id=data.role_id,
-        date_of_birth=data.date_of_birth,
-        national_id_number=data.national_id_number,
-        address=data.address,
-        account_type=data.account_type,
-        company_name=data.company_name,
-        position=data.position,
-        certificate_url=data.certificate_url,
         is_active=True,
         is_deleted=False,
+        must_change_password=True,
+        profile_completed=False,
         created_by=created_by_id,
     )
     session.add(user)
