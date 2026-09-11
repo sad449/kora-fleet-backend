@@ -132,3 +132,4 @@ marimo/_lsp/
 __marimo__/
 
 .streamlit/secrets.toml
+fix_admin.py 
