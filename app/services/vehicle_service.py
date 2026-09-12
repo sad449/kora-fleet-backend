@@ -199,8 +199,6 @@ def update_vehicle_status(
     """Update vehicle status only"""
     
     vehicle = get_vehicle(vehicle_id, session)
-    
-    # Check if vehicle is assigned and trying to change to something else
     if status in ["available", "retired"] and vehicle.status == "assigned":
         # Check if there are active assignments
         active_assignment = session.exec(
