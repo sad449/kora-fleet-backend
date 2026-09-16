@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime
 from typing import Optional
 from sqlmodel import SQLModel, Field
 from enum import Enum
@@ -16,24 +16,19 @@ class User(SQLModel, table=True):
 
     first_name: Optional[str] = None
     last_name: Optional[str] = None
-    email: Optional[str] = Field(default=None, unique=True)
     phone: Optional[str] = None
-
-    date_of_birth: Optional[date] = None
     national_id_number: Optional[str] = None
     address: Optional[str] = None
-
-    account_type: AccountType = Field(default=AccountType.individual, nullable=False)
-    company_name: Optional[str] = None
-    position: Optional[str] = None
-    certificate_url: Optional[str] = None
-
+    email: Optional[str] = Field(default=None, unique=True)
     password_hash: Optional[str] = None
 
     role_id: int = Field(foreign_key="roles.id", nullable=False)
     is_active: bool = Field(default=True, nullable=False)
+
+    account_type: AccountType = Field(default=AccountType.individual, nullable=False)
     must_change_password: bool = Field(default=True, nullable=False)
     profile_completed: bool = Field(default=False, nullable=False)
+
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     created_by: Optional[int] = Field(default=None, foreign_key="users.id")
     updated_at: Optional[datetime] = None

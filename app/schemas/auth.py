@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class LoginRequest(BaseModel):
@@ -11,15 +12,21 @@ class ChangePasswordRequest(BaseModel):
     new_password: str
 
 
-class CompleteProfileRequest(BaseModel):
+class PersonalDetailsRequest(BaseModel):
     first_name: str
     last_name: str
-    date_of_birth: str = None
-    national_id_number: str = None
-    address: str = None
-    account_type: str = "individual"
-    company_name: str = None
-    position: str = None
+    phone: Optional[str] = None
+    national_id_number: Optional[str] = None
+    address: Optional[str] = None
+
+
+class CompanyProfileRequest(BaseModel):
+    company_name: str
+    company_registered_date: Optional[str] = None
+    rdb_certificate: Optional[str] = None
+    status: str = "limited_company"
+    address: Optional[str] = None
+    phone: Optional[str] = None
 
 
 class TokenResponse(BaseModel):
@@ -30,3 +37,4 @@ class TokenResponse(BaseModel):
     role_id: int
     must_change_password: bool
     profile_completed: bool
+    account_type: str

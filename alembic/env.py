@@ -1,7 +1,3 @@
-                                                        
-                                                         
-                                                             
-
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
@@ -12,8 +8,7 @@ from sqlmodel import SQLModel
                                                                          
                                               
 from app.models import role              
-from app.models import role, user, driver,vehicle,vehicle_assignment,trip,audit_log
-                                                         
+from app.models import role, user, driver, vehicle, vehicle_assignment, trip, audit_log, company_profile
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
