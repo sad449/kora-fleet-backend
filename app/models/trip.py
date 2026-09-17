@@ -28,9 +28,11 @@ class Trip(SQLModel, table=True):
 
     est_distance: Optional[Decimal] = Field(default=None, max_digits=8, decimal_places=2)
     actual_distance: Optional[Decimal] = Field(default=None, max_digits=8, decimal_places=2)
+
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     created_by: Optional[int] = Field(default=None, foreign_key="users.id")
     updated_at: Optional[datetime] = None
     updated_by: Optional[int] = Field(default=None, foreign_key="users.id")
+    is_deleted: bool = Field(default=False, nullable=False)
     deleted_at: Optional[datetime] = None
     deleted_by: Optional[int] = Field(default=None, foreign_key="users.id")
