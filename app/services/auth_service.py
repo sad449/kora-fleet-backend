@@ -37,7 +37,6 @@ def login(email: str, password: str, session: Session) -> dict:
         "role_id": user.role_id,
         "must_change_password": user.must_change_password,
         "profile_completed": user.profile_completed,
-        "account_type": user.account_type.value,
     }
 
 
@@ -63,18 +62,10 @@ def save_personal_details(user: User, data: dict, session: Session) -> dict:
     user.national_id_number = data.get("national_id_number") or None
     user.address = data.get("address") or None
     user.updated_at = datetime.utcnow()
-
-    if user.account_type.value == "individual":
-        user.profile_completed = True
-
     session.add(user)
     session.commit()
 
-    return {
-        "message": "Personal details saved",
-        "profile_completed": user.profile_completed,
-        "account_type": user.account_type.value,
-    }
+    return {"message": "Personal details saved"}
 
 
 def save_company_profile(user: User, data: dict, session: Session) -> dict:
@@ -82,11 +73,13 @@ def save_company_profile(user: User, data: dict, session: Session) -> dict:
         select(CompanyProfile).where(CompanyProfile.user_id == user.id)
     ).first()
 
+    registered_date = data.get("company_registered_date") or None
+
     if existing:
         existing.company_name = data.get("company_name") or None
-        existing.company_registered_date = data.get("company_registered_date") or None
+        existing.company_type = data.get("company_type") or "solo"
+        existing.company_registered_date = registered_date
         existing.rdb_certificate = data.get("rdb_certificate") or None
-        existing.status = data.get("status") or "limited_company"
         existing.address = data.get("address") or None
         existing.phone = data.get("phone") or None
         existing.updated_at = datetime.utcnow()
@@ -95,9 +88,9 @@ def save_company_profile(user: User, data: dict, session: Session) -> dict:
         profile = CompanyProfile(
             user_id=user.id,
             company_name=data.get("company_name") or None,
-            company_registered_date=data.get("company_registered_date") or None,
+            company_type=data.get("company_type") or "solo",
+            company_registered_date=registered_date,
             rdb_certificate=data.get("rdb_certificate") or None,
-            status=data.get("status") or "limited_company",
             address=data.get("address") or None,
             phone=data.get("phone") or None,
         )

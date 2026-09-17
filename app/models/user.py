@@ -1,12 +1,6 @@
 from datetime import datetime
 from typing import Optional
 from sqlmodel import SQLModel, Field
-from enum import Enum
-
-
-class AccountType(str, Enum):
-    individual = "individual"
-    company = "company"
 
 
 class User(SQLModel, table=True):
@@ -25,7 +19,6 @@ class User(SQLModel, table=True):
     role_id: int = Field(foreign_key="roles.id", nullable=False)
     is_active: bool = Field(default=True, nullable=False)
 
-    account_type: AccountType = Field(default=AccountType.individual, nullable=False)
     must_change_password: bool = Field(default=True, nullable=False)
     profile_completed: bool = Field(default=False, nullable=False)
 

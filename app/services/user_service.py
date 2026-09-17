@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 from datetime import datetime
-from app.models.user import User, AccountType
+from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
 from app.core.security import hash_password
 
@@ -49,26 +49,15 @@ def update_user(user_id: int, data: UserUpdate, updated_by_id: int, session: Ses
         user.last_name = data.last_name
     if data.phone is not None:
         user.phone = data.phone
-    if data.role_id is not None:
-        user.role_id = data.role_id
-    if data.date_of_birth is not None:
-        user.date_of_birth = data.date_of_birth
     if data.national_id_number is not None:
         user.national_id_number = data.national_id_number
     if data.address is not None:
         user.address = data.address
-    if data.account_type is not None:
-        user.account_type = data.account_type
-    if data.company_name is not None:
-        user.company_name = data.company_name
-    if data.position is not None:
-        user.position = data.position
-    if data.certificate_url is not None:
-        user.certificate_url = data.certificate_url
+    if data.role_id is not None:
+        user.role_id = data.role_id
 
     user.updated_at = datetime.utcnow()
     user.updated_by = updated_by_id
-
     session.add(user)
     session.commit()
     session.refresh(user)
@@ -81,7 +70,6 @@ def delete_user(user_id: int, deleted_by_id: int, session: Session) -> User:
     user.is_active = False
     user.deleted_at = datetime.utcnow()
     user.deleted_by = deleted_by_id
-
     session.add(user)
     session.commit()
     session.refresh(user)

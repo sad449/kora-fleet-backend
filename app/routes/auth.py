@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session
 from app.database import get_session
 from app.schemas.auth import (
@@ -13,6 +14,7 @@ from app.models.user import User
 from app.services.auth_service import (
     change_password, save_personal_details, save_company_profile
 )
+from app.core.uploads import save_file
 
 router = APIRouter()
 bearer = HTTPBearer()
@@ -50,7 +52,6 @@ def me(
         "role_id": user.role_id,
         "must_change_password": user.must_change_password,
         "profile_completed": user.profile_completed,
-        "account_type": user.account_type.value,
     }
 
 
@@ -81,3 +82,12 @@ def company_profile(
     session: Session = Depends(get_session)
 ):
     return save_company_profile(current_user, request.dict(), session)
+
+
+@router.post("/upload-certificate")
+async def upload_certificate(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    filename = await save_file(file)
+    return {"filename": filename, "url": f"/uploads/{filename}"}

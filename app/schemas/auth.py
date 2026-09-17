@@ -22,9 +22,9 @@ class PersonalDetailsRequest(BaseModel):
 
 class CompanyProfileRequest(BaseModel):
     company_name: str
+    company_type: str = "solo"
     company_registered_date: Optional[str] = None
     rdb_certificate: Optional[str] = None
-    status: str = "limited_company"
     address: Optional[str] = None
     phone: Optional[str] = None
 
@@ -37,4 +37,3 @@ class TokenResponse(BaseModel):
     role_id: int
     must_change_password: bool
     profile_completed: bool
-    account_type: str

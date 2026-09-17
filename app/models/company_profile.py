@@ -1,13 +1,12 @@
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
 from sqlmodel import SQLModel, Field
 from enum import Enum
 
 
-class CompanyStatus(str, Enum):
-    sole_proprietorship = "sole_proprietorship"
-    limited_company = "limited_company"
-    partnership = "partnership"
+class CompanyType(str, Enum):
+    solo = "solo"
+    company = "company"
 
 
 class CompanyProfile(SQLModel, table=True):
@@ -17,9 +16,9 @@ class CompanyProfile(SQLModel, table=True):
     user_id: int = Field(foreign_key="users.id", unique=True, nullable=False)
 
     company_name: Optional[str] = None
-    company_registered_date: Optional[str] = None
+    company_type: CompanyType = Field(default=CompanyType.solo, nullable=False)
+    company_registered_date: Optional[date] = None
     rdb_certificate: Optional[str] = None
-    status: CompanyStatus = Field(default=CompanyStatus.limited_company, nullable=False)
     address: Optional[str] = None
     phone: Optional[str] = None
 

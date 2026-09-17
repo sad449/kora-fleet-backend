@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from typing import Optional
-from app.models.user import AccountType
 
 
 class UserCreate(BaseModel):
@@ -19,7 +18,6 @@ class UserOut(BaseModel):
     address: Optional[str] = None
     role_id: int
     is_active: bool
-    account_type: AccountType
     profile_completed: bool
 
     class Config:
