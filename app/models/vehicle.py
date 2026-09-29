@@ -23,6 +23,7 @@ class Vehicle(SQLModel, table=True):
     year: Optional[int] = None
     mileage: int = Field(default=0, nullable=False)
     capacity: Optional[int] = None
+    is_deleted: bool = Field(default=False, nullable=False)
     status: VehicleStatus = Field(default=VehicleStatus.available, nullable=False)
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     created_by: Optional[int] = Field(default=None, foreign_key="users.id")
