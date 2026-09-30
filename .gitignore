@@ -133,3 +133,4 @@ __marimo__/
 
 .streamlit/secrets.toml
 fix_admin.py 
+uploads/ 

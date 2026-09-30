@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from typing import Optional
 from sqlmodel import SQLModel, Field
@@ -16,7 +15,6 @@ class Vehicle(SQLModel, table=True):
     __tablename__ = "vehicles"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-
     plate_number: str = Field(unique=True, nullable=False)
     make: Optional[str] = None
     model: Optional[str] = None
@@ -24,9 +22,10 @@ class Vehicle(SQLModel, table=True):
     mileage: int = Field(default=0, nullable=False)
     capacity: Optional[int] = None
     status: VehicleStatus = Field(default=VehicleStatus.available, nullable=False)
+
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     created_by: Optional[int] = Field(default=None, foreign_key="users.id")
     updated_at: Optional[datetime] = None
-    updated_by: Optional[int] = Field(default=None, foreign_key="users.id")
+    is_deleted: bool = Field(default=False, nullable=False)
     deleted_at: Optional[datetime] = None
     deleted_by: Optional[int] = Field(default=None, foreign_key="users.id")

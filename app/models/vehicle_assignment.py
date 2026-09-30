@@ -17,5 +17,4 @@ class VehicleAssignment(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     created_by: Optional[int] = Field(default=None, foreign_key="users.id")
     updated_at: Optional[datetime] = None
-    updated_by: Optional[int] = Field(default=None, foreign_key="users.id")
     is_deleted: bool = Field(default=False, nullable=False)

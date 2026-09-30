@@ -14,7 +14,6 @@ class CompanyProfile(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id", unique=True, nullable=False)
-
     company_name: Optional[str] = None
     company_type: CompanyType = Field(default=CompanyType.solo, nullable=False)
     company_registered_date: Optional[date] = None
