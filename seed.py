@@ -42,6 +42,8 @@ def seed():
                 password_hash=hash_password("admin123"),
                 role_id=role_map["admin"],
                 is_active=True,
+                must_change_password=False,
+                profile_completed=True,
             )
             session.add(admin)
             session.commit()

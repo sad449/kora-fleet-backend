@@ -1,11 +1,20 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session
 from app.database import get_session
-from app.schemas.auth import LoginRequest, TokenResponse
+from app.schemas.auth import (
+    LoginRequest, TokenResponse, ChangePasswordRequest,
+    PersonalDetailsRequest, CompanyProfileRequest
+)
 from app.controllers.auth_controller import login_controller
 from app.core.security import decode_access_token
+from app.core.deps import get_current_user
 from app.models.user import User
+from app.services.auth_service import (
+    change_password, save_personal_details, save_company_profile
+)
+from app.core.uploads import save_file
 
 router = APIRouter()
 bearer = HTTPBearer()
@@ -41,4 +50,44 @@ def me(
         "last_name": user.last_name,
         "email": user.email,
         "role_id": user.role_id,
+        "must_change_password": user.must_change_password,
+        "profile_completed": user.profile_completed,
     }
+
+
+@router.post("/change-password")
+def change_pwd(
+    request: ChangePasswordRequest,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session)
+):
+    return change_password(
+        current_user, request.old_password, request.new_password, session
+    )
+
+
+@router.post("/personal-details")
+def personal_details(
+    request: PersonalDetailsRequest,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session)
+):
+    return save_personal_details(current_user, request.dict(), session)
+
+
+@router.post("/company-profile")
+def company_profile(
+    request: CompanyProfileRequest,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session)
+):
+    return save_company_profile(current_user, request.dict(), session)
+
+
+@router.post("/upload-certificate")
+async def upload_certificate(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    filename = await save_file(file)
+    return {"filename": filename, "url": f"/uploads/{filename}"}
